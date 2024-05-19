@@ -1,0 +1,111 @@
+ Introduction
+
+Spam SMS messages are an annoyance and a potential security threat. Automatically classifying these messages as spam or ham (non-spam) is a valuable tool for protecting users from unwanted and potentially harmful content. This project aims to build an SMS spam classifier using machine learning techniques and deploy it using Streamlit, a popular framework for creating interactive web applications.
+
+ Tools Used
+
+# 1. Pandas
+   - Purpose: Data manipulation and analysis.
+   - Usage: Reading and cleaning the dataset, performing exploratory data analysis (EDA), and preparing data for model training.
+
+# 2. NumPy
+   - Purpose: Numerical computing.
+   - Usage: Supporting data manipulation and calculations.
+
+# 3. Scikit-learn
+   - Purpose: Machine learning library.
+   - Usage: Label encoding, vectorization, model training, and evaluation.
+
+# 4. NLTK (Natural Language Toolkit)
+   - Purpose: Natural language processing.
+   - Usage: Text preprocessing, tokenization, and stemming.
+
+# 5. Matplotlib & Seaborn
+   - Purpose: Data visualization.
+   - Usage: Visualizing data distribution and relationships.
+
+# 6. WordCloud
+   - Purpose: Creating word clouds.
+   - Usage: Visualizing the most frequent words in spam and ham messages.
+
+# 7. Pickle
+   - Purpose: Serialization and deserialization.
+   - Usage: Saving the trained model and vectorizer for future use.
+
+# 8. Streamlit
+   - Purpose: Building interactive web applications.
+   - Usage: Creating a user-friendly interface for the SMS spam classifier.
+
+ Building the SMS Spam Classifier
+
+# Data Cleaning and Preprocessing
+The initial steps involve loading the data, cleaning it, and preprocessing the text for analysis. Here’s a brief overview of the process:
+
+1. Loading Data: The dataset is loaded using Pandas.
+2. Cleaning Data: Unnecessary columns are dropped, and columns are renamed for clarity.
+3. Encoding Labels: The target labels (spam and ham) are encoded using `LabelEncoder`.
+4. Removing Duplicates: Duplicate messages are removed to ensure the dataset's integrity.
+5. Text Preprocessing: Text messages are transformed by converting to lowercase, removing non-alphanumeric characters, stopwords, and applying stemming.
+
+# Exploratory Data Analysis (EDA)
+EDA involves visualizing the distribution of spam and ham messages and the characteristics of the text (e.g., number of characters, words, and sentences).
+
+# Model Building
+Several machine learning models are trained and evaluated:
+
+1. Vectorization: The text data is converted into numerical form using `TfidfVectorizer`.
+2. Model Training: Various Naive Bayes classifiers (GaussianNB, MultinomialNB, BernoulliNB) are trained.
+3. Evaluation: Models are evaluated based on accuracy, confusion matrix, and precision score.
+
+# Saving the Model
+The trained model and vectorizer are saved using Pickle for future use.
+
+ Implementing with Streamlit
+
+Streamlit is used to create an interactive web application that allows users to input an SMS message and get a classification result (spam or ham). Here’s a basic implementation of the Streamlit app:
+
+```python
+import streamlit as st
+import pickle
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.naive_bayes import MultinomialNB
+
+# Load the model and vectorizer
+vectorizer = pickle.load(open('vectorizer.pkl', 'rb'))
+model = pickle.load(open('model.pkl', 'rb'))
+
+# Streamlit app
+st.title("SMS Spam Classifier")
+st.write("Enter an SMS message to classify it as spam or ham")
+
+# Input text box
+input_text = st.text_area("Enter SMS message")
+
+# Prediction
+if st.button("Classify"):
+    if input_text:
+        transformed_text = vectorizer.transform([input_text])
+        prediction = model.predict(transformed_text)[0]
+        if prediction == 1:
+            st.write("This message is spam.")
+        else:
+            st.write("This message is ham.")
+    else:
+        st.write("Please enter a message.")
+```
+
+ How to Run the Streamlit App
+
+1. Install Streamlit: Install Streamlit if you haven't already.
+   ```bash
+   pip install streamlit
+   ```
+
+2. Run the App: Save the above code in a Python file (e.g., `app.py`) and run it using:
+   ```bash
+   streamlit run app.py
+   ```
+
+3. Interact with the App: A web browser will open, and you can input SMS messages to see whether they are classified as spam or ham.
+
+This implementation leverages Streamlit’s simplicity and interactivity to create a functional and user-friendly SMS spam classification tool.
