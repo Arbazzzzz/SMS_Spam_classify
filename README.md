@@ -1,4 +1,4 @@
- Introduction
+## Introduction
 
 Spam SMS messages are an annoyance and a potential security threat. Automatically classifying these messages as spam or ham (non-spam) is a valuable tool for protecting users from unwanted and potentially harmful content. This project aims to build an SMS spam classifier using machine learning techniques and deploy it using Streamlit, a popular framework for creating interactive web applications.
 
